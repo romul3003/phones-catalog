@@ -1,12 +1,23 @@
 import Component from '../../shared/component.js';
 
 export default class PhoneCatalog extends Component {
-    constructor({ element, phones }) {
-        super({ element })
+    constructor({ element, phones, onPhoneSelected }) {
+        super({ element });
 
         this._phones = phones;
+        this._onPhoneSelected = onPhoneSelected;
 
         this._render();
+
+        this._element.addEventListener('click', event => this._onPhoneClick(event));
+    }
+
+    _onPhoneClick(event) {
+        let phoneLink = event.target.closest('[data-element="phone-link"]');
+
+        if (!phoneLink) return;
+
+        this._onPhoneSelected(phoneLink.dataset.phoneId);
     }
 
     _render() {
@@ -14,7 +25,7 @@ export default class PhoneCatalog extends Component {
             <ul class="phones">
                 ${ this._phones.map(phone => `
                     <li class="thumbnail">
-                        <a href="#!/phones/${phone.id}" class="thumb">
+                        <a data-element="phone-link" data-phone-id="${phone.id}" href="#!/phones/${phone.id}" class="thumb">
                             <img alt="${phone.name}" src="${phone.imageUrl}">
                         </a>
     
@@ -24,7 +35,7 @@ export default class PhoneCatalog extends Component {
                             </a>
                         </div>
     
-                        <a href="#!/phones/${phone.id}">${phone.name}</a>
+                        <a data-element="phone-link" data-phone-id="${phone.id}" href="#!/phones/${phone.id}">${phone.name}</a>
                         <p>${phone.snippet}</p>
                     </li>
                 `).join('')}
