@@ -8,33 +8,43 @@ export default class PhonesPage {
 
         this._render();
 
+        this._initCatalog();
         this._initViewer();
 
+
+
+    }
+
+    _initCatalog() {
         this._catalog = new PhoneCatalog({
             element: this._element.querySelector('[data-component="phone-catalog"]'),
             phones: PhoneService.getPhones(),
         });
 
-        this._catalog._element.addEventListener('phoneSelected', (event) => {
+        this._catalog.on('phoneSelected', (event) => {
             let phone = PhoneService.getPhone(event.detail.phoneId);
 
             this._catalog.hide();
             this._viewer.showPhone(phone);
         })
 
-            // onPhoneSelected: (phoneId) => {
-            //     let phone = PhoneService.getPhone(phoneId);
-            //
-            //     this._catalog.hide();
-            //     this._viewer.showPhone(phone);
-            // }
-
+        // onPhoneSelected: (phoneId) => {
+        //     let phone = PhoneService.getPhone(phoneId);
+        //
+        //     this._catalog.hide();
+        //     this._viewer.showPhone(phone);
+        // }
     }
 
     _initViewer() {
         this._viewer = new PhoneViewer({
             element: this._element.querySelector('[data-component="phone-viewer"]'),
         });
+
+        this._viewer.on('back', () => {
+            this._viewer.hide();
+            this._catalog.show();
+        })
     }
 
     _render() {
