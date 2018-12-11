@@ -66,24 +66,32 @@ const phone = {
 };
 
 const PhoneService = {
-    getPhones() {
-        var xhr = new XMLHttpRequest();
-
-        xhr.open('GET', '/phones/phones.json', false);
-
+    _sendRequest(url, { method = 'GET', successCallback }) {
+        let xhr = new XMLHttpRequest();
+        xhr.open(method, url, true);
         xhr.send();
 
-        if (xhr.status != 200) {
-            alert( xhr.status + ': ' + xhr.statusText );
-        } else {
+        xhr.onload = () => {
             let responseData = JSON.parse(xhr.responseText);
-            return responseData;
+            successCallback(responseData);
+        };
+
+        xhr.onerror = () => {
+            console.error(xhr.status + ': ' + xhr.statusText);
         }
     },
 
-    getPhone(phoneId) {
-        return phone;
+    getPhones(callback) {
+        this._sendRequest('/phones/phones.json', {
+            successCallback: callback,
+        });
+    },
+
+    getPhone(phoneId, callback) {
+        this._sendRequest(`/phones/${phoneId}.json`, {
+            successCallback: callback,
+        });
     }
 };
 
-export default PhoneService; 
+export default PhoneService;
