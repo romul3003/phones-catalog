@@ -1,7 +1,5 @@
 const BASE_URL = location.pathname;
 
-
-
 const PhoneService = {
     _sendRequest(url, { method = 'GET', successCallback }) {
         let xhr = new XMLHttpRequest();

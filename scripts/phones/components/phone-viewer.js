@@ -2,7 +2,7 @@ import Component from '../../shared/component.js';
 
 export default class PhoneViewer extends Component {
     constructor({ element }) {
-        super({ element })
+        super({ element });
 
         this.on('click', event => {
             let backButton = event.target.closest('[data-element="button-back"]');
@@ -10,7 +10,7 @@ export default class PhoneViewer extends Component {
 
             let custumEvent = new CustomEvent('back');
             this._element.dispatchEvent(custumEvent);
-        })
+        });
     }
 
     showPhone(phone) {
