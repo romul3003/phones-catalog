@@ -44,7 +44,12 @@ export default class PhonesPage {
         this._viewer.on('back', () => {
             this._viewer.hide();
             this._catalog.show();
-        })
+        });
+
+        this._viewer.on('add', event => {
+            let phoneId = event.detail;
+            this._cart.addItem(phoneId);
+        });
     }
 
     _initCart() {
