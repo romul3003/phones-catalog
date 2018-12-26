@@ -22,7 +22,7 @@ export default class PhoneViewer extends Component {
     }
 
     _onThumbClick(event) {
-        let largeImage = this._element.querySelector('[data-element="large-image"]');
+        let largeImage = this._largeImage;
         largeImage.src = event.delegateTarget.href;
         event.preventDefault();
     }
@@ -30,8 +30,12 @@ export default class PhoneViewer extends Component {
     showPhone(phone) {
         this._phone = phone;
         this._render();
-
+        this._initLargeImage( this._element.querySelector('[data-element="large-image"]') );
         super.show();
+    }
+
+    _initLargeImage(largeImage) {
+        this._largeImage = largeImage;
     }
 
     _render() {
