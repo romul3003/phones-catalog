@@ -2,7 +2,7 @@ import Component from '../../shared/component.js';
 
 export default class PhoneViewer extends Component {
     constructor({ element }) {
-        super({ element });
+        super({element});
 
         this.on('click', event => {
             let backButton = event.target.closest('[data-element="button-back"]');
@@ -18,7 +18,9 @@ export default class PhoneViewer extends Component {
             this._trigger('add', phone.id);
         });
 
+
         this.on('click', '[data-element="thumb-image"]', event => this._onThumbClick(event));
+
     }
 
     _onThumbClick(event) {
