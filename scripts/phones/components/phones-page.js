@@ -14,8 +14,8 @@ export default class PhonesPage {
         this._initCart();
 
         let phonesPromise = PhoneService.getPhones();
-        phonesPromise.then(phones => {
-            this._catalog.showPhones(phones);
+        phonesPromise.then(sortedFilteredPhones => {
+            this._catalog.showPhones(sortedFilteredPhones);
         });
 
     }

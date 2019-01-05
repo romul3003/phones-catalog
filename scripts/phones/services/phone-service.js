@@ -1,13 +1,28 @@
 import HttpService from '../../shared/services/http-service.js'
 
 const PhoneService = {
-    getPhones() {
-        return HttpService.sendRequest('phones/phones.json');
+    getPhones({ query = '', orderField = '' } = {}) {
+        let promise = HttpService.sendRequest('phones/phones.json');
+
+        return promise.then(phones => {
+            let filteredPhones = this._filter(phones, query);
+            let sortedPhones = this._sort(filteredPhones, orderField);
+
+            return sortedPhones;
+        });
     },
 
     getPhone(phoneId) {
         return HttpService.sendRequest(`phones/${phoneId}.json`);
     },
+
+    _filter(phones, query) {
+        return phones;
+    },
+
+    _sort(phones, orderField) {
+        return phones;
+    }
 };
 
 // handmade promise class MyPromise
