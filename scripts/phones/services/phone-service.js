@@ -1,48 +1,16 @@
 import HttpService from '../../shared/services/http-service.js'
 
 const PhoneService = {
-
-    getPhones(callback) {
-        HttpService.sendRequest('phones/phones.json', {
-            successCallback: callback,
-        });
+    getPhones() {
+        return HttpService.sendRequest('phones/phones.json');
     },
 
-    getPhone(phoneId, callback) {
-        // HttpService.sendRequest(`phones/${phoneId}.json`, {
-        //     successCallback: callback,
-        // });
-
-        let promise = this._sendRequest(`phones/${phoneId}.json`);
-
-        promise.then(callback, err => {console.log('cb1', err) });
-        promise.catch(err => {console.log('cb2', err) });
-
-        setTimeout(() => {
-            promise.then(result => {
-                console.log(result);
-            })
-        }, 1000);
-
-
+    getPhone(phoneId) {
+        return HttpService.sendRequest(`phones/${phoneId}.json`);
     },
-
-    _sendRequest(url) {
-        let promise = new MyPromise((resolve, reject) => {
-            HttpService.sendRequest(url, {
-                successCallback(data) {
-                    resolve(data);
-                },
-                errorCallback(error) {
-                    reject(error);
-                }
-            });
-        });
-
-        return promise;
-    }
 };
 
+// handmade promise class MyPromise
 class MyPromise {
     constructor(behaviorFunction) {
         this._successCallbacks = [];
