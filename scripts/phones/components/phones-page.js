@@ -2,6 +2,7 @@ import PhoneCatalog from './phone-catalog.js';
 import PhoneViewer from './phone-viewer.js';
 import PhoneService from '../services/phone-service.js';
 import ShoppingCart from './shopping-cart.js';
+import PhonesFilter from './phones-filter.js';
 
 export default class PhonesPage {
     constructor({ element }) {
@@ -12,6 +13,7 @@ export default class PhonesPage {
         this._initCatalog();
         this._initViewer();
         this._initCart();
+        this._initFilter();
 
         let phonesPromise = PhoneService.getPhones();
         phonesPromise.then(sortedFilteredPhones => {
@@ -61,6 +63,27 @@ export default class PhonesPage {
         });
     }
 
+    _initFilter() {
+        this._filter = new PhonesFilter({
+            element: this._element.querySelector('[data-component="phones-filter"]'),
+        });
+
+        this._filter.on('search', event => {
+            PhoneService.getPhones({ query: event.detail })
+                .then(filteredPhones => {
+                    this._catalog.showPhones(filteredPhones);
+                })
+        });
+
+        this._filter.on('sort', event => {
+            console.log(event.detail);
+            PhoneService.getPhones({ orderField: event.detail })
+                .then(sortedPhones => {
+                    this._catalog.showPhones(sortedPhones);
+                })
+        })
+    }
+
     _render() {
         this._element.innerHTML = `
             <div class="row">
@@ -68,18 +91,7 @@ export default class PhonesPage {
                 <!--Sidebar-->
                 <div class="col-md-2">
                     <section>
-                        <p>
-                            Search:
-                            <input>
-                        </p>
-        
-                        <p>
-                            Sort by:
-                            <select>
-                                <option value="name">Alphabetical</option>
-                                <option value="age">Newest</option>
-                            </select>
-                        </p>
+                        <div data-component="phones-filter"></div>
                     </section>
         
                     <section>
