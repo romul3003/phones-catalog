@@ -27,12 +27,10 @@ export default class PhonesPage {
             element: this._element.querySelector('[data-component="phone-catalog"]'),
         });
 
-        this._catalog.on('phoneSelected', (event) => {
-            let phonePromise = PhoneService.getPhone(event.detail.phoneId);
-            phonePromise.then(phone => {
-                this._catalog.hide();
-                this._viewer.showPhone(phone);
-            });
+        this._catalog.on('phoneSelected', async (event) => {
+            let phone = await PhoneService.getPhone(event.detail.phoneId);
+            this._catalog.hide();
+            this._viewer.showPhone(phone);
         });
 
         this._catalog.on('add', event => {
